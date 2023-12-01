@@ -49,6 +49,7 @@ class UsersController < ApplicationController
     def logged_in_user
       unless logged_in?
         #ログインしていなかった場合
+        store_location#行く予定だったページを記憶する
         flash[:danger] = "Please log in"
         redirect_to login_url, status: :see_other
       end

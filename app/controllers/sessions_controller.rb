@@ -5,10 +5,11 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user&.authenticate(params[:session][:password])
+      forwarding_url = session[:forwarding_url]#セッションを消す前に転送先URLだけ記憶しておく
       reset_session #ログインの直前に必ずこれをかく
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
       log_in user
-      redirect_to user
+      redirect_to forwarding_url || user
     else
       #エラーメッセージを作成する
       flash.now[:danger] = 'Invalid email/password combination' #本当は正しくない
