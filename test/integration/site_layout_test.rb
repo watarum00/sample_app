@@ -14,4 +14,19 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     get contact_path
     assert_select "title", full_title("Contact")
   end
+
+  def setup
+    @user = users(:michael)
+  end
+
+  test "layout links when loggend in user" do
+    log_in_as(@user)
+    get root_path
+    #ルートへのパスが2つあるかテスト
+    assert_select "a[href=?]", root_path, count: 2
+    #ヘルプへのパスがあるかテスト
+    assert_select "a[href=?]", help_path
+    assert_select "a[href=?]", about_path
+    assert_select "a[href=?]", contact_path
+  end
 end
