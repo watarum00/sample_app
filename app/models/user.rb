@@ -35,9 +35,10 @@ class User < ApplicationRecord
     end
 
     # 渡されたトークンがダイジェストと一致したらtrueを返す
-    def authenticated?(remember_token)
-        return false if remember_digest.nil?    #既に記憶ダイジェストが消されていたらfalseを返す
-        BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    def authenticated?(attribute, token)
+        digest = send("#{attribute}_digest")
+        return false if digest.nil?#既に〜ダイジェストが消されていたらfalseを返す
+        BCrypt::Password.new(digest).is_password?(token)
     end
 
     def forget
