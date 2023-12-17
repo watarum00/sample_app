@@ -48,8 +48,8 @@ class User < ApplicationRecord
     #アカウントを有効化する
     def activate
         #有効化の際には有効フラグとタイムスタンプを同時更新
-        update_attribute(:activated, true)
-        update_attribute(:activated_at, Time.zone.now)
+        #update_columnsで同時に一行を更新
+        update_columns(activated: true, activated_at: Time.zone.now)
     end
 
     #有効化用のメールを送信する
