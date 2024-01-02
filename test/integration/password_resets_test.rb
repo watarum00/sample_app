@@ -95,6 +95,7 @@ class PasswordUpdateTest < PasswordResetForm
     assert is_logged_in?
     assert_not flash.empty?
     assert_redirected_to @reset_user
+    assert_nil @user.reload.reset_digest#ちゃんと更新後nilになっているかのテスト
   end
 end
 
